@@ -24,7 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import { Globe, Database, TestTube, Save, Plus, X, Key } from "lucide-react";
+import { Globe, Database, TestTube, Save, Plus, X } from "lucide-react";
 
 import { Company, LoginStep, Site } from "../types/schema";
 
@@ -33,33 +33,12 @@ interface SiteConfigurationPanelProps {
   initialConfig?: Partial<Site & { steps: LoginStep[] }>;
   companies?: Company[];
   tables?: string[];
-  credentials?: LoginCredential[];
 }
 
 const SiteConfigurationPanel = ({
   onSave = () => {},
   initialConfig = {},
-  companies = [
-    { id: "1", name: "ABC Limited" },
-    { id: "2", name: "XYZ Corp" },
-  ],
   tables = ["credentials", "users", "accounts"],
-  credentials = [
-    {
-      id: "1",
-      company_id: "1",
-      site_id: "1",
-      username: "admin@abc.com",
-      password: "******",
-    },
-    {
-      id: "2",
-      company_id: "2",
-      site_id: "1",
-      username: "admin@xyz.com",
-      password: "******",
-    },
-  ],
 }: SiteConfigurationPanelProps) => {
   const [steps, setSteps] = useState<LoginStep[]>(
     initialConfig?.steps || [
@@ -85,11 +64,10 @@ const SiteConfigurationPanel = ({
         </div>
 
         <Tabs defaultValue="basic" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="basic">Basic Info</TabsTrigger>
             <TabsTrigger value="mapping">Field Mapping</TabsTrigger>
             <TabsTrigger value="steps">Login Steps</TabsTrigger>
-            <TabsTrigger value="credentials">Credentials</TabsTrigger>
           </TabsList>
 
           <TabsContent value="basic" className="space-y-4">
@@ -124,50 +102,21 @@ const SiteConfigurationPanel = ({
             </div>
           </TabsContent>
 
-          <TabsContent value="credentials" className="space-y-4">
+          <TabsContent value="mapping" className="space-y-4">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Select Company</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose a company" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {companies.map((company) => (
-                      <SelectItem key={company.id} value={company.id}>
-                        {company.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label>Username Field</Label>
+                <Input placeholder="#username or .login-input" />
               </div>
 
               <div className="space-y-2">
-                <Label>Saved Credentials</Label>
-                <ScrollArea className="h-[200px] rounded-md border p-4">
-                  {credentials.map((cred) => (
-                    <div
-                      key={cred.id}
-                      className="flex items-center justify-between py-2"
-                    >
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">
-                          {
-                            companies.find((c) => c.id === cred.company_id)
-                              ?.name
-                          }
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {cred.username}
-                        </p>
-                      </div>
-                      <Button variant="outline" size="sm">
-                        <Key className="h-4 w-4 mr-2" />
-                        Use
-                      </Button>
-                    </div>
-                  ))}
-                </ScrollArea>
+                <Label>Password Field</Label>
+                <Input placeholder="#password or .password-input" />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Submit Button</Label>
+                <Input placeholder="#submit or .login-button" />
               </div>
             </div>
           </TabsContent>
@@ -284,25 +233,6 @@ const SiteConfigurationPanel = ({
                 </Button>
               </div>
             </ScrollArea>
-          </TabsContent>
-
-          <TabsContent value="mapping" className="space-y-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Username Field</Label>
-                <Input placeholder="#username or .login-input" />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Password Field</Label>
-                <Input placeholder="#password or .password-input" />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Submit Button</Label>
-                <Input placeholder="#submit or .login-button" />
-              </div>
-            </div>
           </TabsContent>
         </Tabs>
 

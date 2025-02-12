@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import CredentialsDialog from "./CredentialsDialog";
 
 interface Site {
   id: string;
@@ -70,6 +71,7 @@ const SiteList = ({
               </div>
 
               <div className="flex items-center space-x-4">
+                <CredentialsDialog siteUrl={site.url} />
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
